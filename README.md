@@ -117,6 +117,10 @@ The Firebase project that contains the Hosting site to which you
 want to deploy. If left blank, you need to check in a `.firebaserc`
 file so that the Firebase CLI knows which Firebase project to use.
 
+### `config` _{string}_
+
+The Firebase configuration file. This defaults to `firebase.json`
+
 ### `channelId` _{string}_
 
 The ID of the channel to deploy to. If you leave this blank,

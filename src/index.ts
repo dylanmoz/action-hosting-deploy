@@ -40,7 +40,7 @@ import {
 // Inputs defined in action.yml
 const expires = getInput("expires");
 const projectId = getInput("projectId");
-const config = getInput("config") || 'firebase.json';
+const config = getInput("config") || "firebase.json";
 const googleApplicationCredentials = getInput("firebaseServiceAccount", {
   required: true,
 });
@@ -61,7 +61,7 @@ async function run() {
   }
 
   try {
-    startGroup("Verifying firebase.json exists");
+    startGroup(`Verifying ${config} exists`);
 
     if (entryPoint !== ".") {
       console.log(`Changing to directory: ${entryPoint}`);
