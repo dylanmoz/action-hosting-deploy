@@ -37,6 +37,10 @@ inputs:
       "The project to deploy to. If you leave this blank, make sure you check in
       a .firebaserc file"
     required: false
+  config:
+    description:
+      "The firebase config file to use. Defaults to firebase.json"
+    required: false
   channelId:
     description: "The ID of the channel to deploy to. If you leave this blank,
       a preview channel and its ID will be auto-generated per branch or PR."

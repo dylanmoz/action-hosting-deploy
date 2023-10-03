@@ -17,12 +17,14 @@ import {
 
 const baseChannelDeployConfig: ChannelDeployConfig = {
   projectId: "my-project",
+  config: "firebase.json",
   channelId: "my-channel",
   expires: undefined,
 };
 
 const baseLiveDeployConfig: ProductionDeployConfig = {
   projectId: "my-project",
+  config: "firebase.json",
 };
 
 async function fakeExecFail(

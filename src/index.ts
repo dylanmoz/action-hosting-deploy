@@ -40,6 +40,7 @@ import {
 // Inputs defined in action.yml
 const expires = getInput("expires");
 const projectId = getInput("projectId");
+const config = getInput("config") || 'firebase.json';
 const googleApplicationCredentials = getInput("firebaseServiceAccount", {
   required: true,
 });
@@ -71,11 +72,11 @@ async function run() {
       }
     }
 
-    if (existsSync("./firebase.json")) {
-      console.log("firebase.json file found. Continuing deploy.");
+    if (existsSync(`./${config}`)) {
+      console.log(`${config} config file found. Continuing deploy.`);
     } else {
       throw Error(
-        "firebase.json file not found. If your firebase.json file is not in the root of your repo, edit the entryPoint option of this GitHub action."
+        `${config} config file not found. If your firebase.json file is not in the root of your repo, edit the entryPoint option of this GitHub action. Or check the spelling if you set the config option.`
       );
     }
     endGroup();
@@ -91,6 +92,7 @@ async function run() {
       startGroup("Deploying to production site");
       const deployment = await deployProductionSite(gacFilename, {
         projectId,
+        config,
         target,
         firebaseToolsVersion,
       });
@@ -117,6 +119,7 @@ async function run() {
     startGroup(`Deploying to Firebase preview channel ${channelId}`);
     const deployment = await deployPreview(gacFilename, {
       projectId,
+      config,
       expires,
       channelId,
       target,

@@ -42,6 +42,7 @@ export type ProductionSuccessResult = {
 
 type DeployConfig = {
   projectId: string;
+  config: string;
   target?: string;
   // Optional version specification for firebase-tools. Defaults to `latest`.
   firebaseToolsVersion?: string;
@@ -71,6 +72,7 @@ export function interpretChannelDeployResult(
 async function execWithCredentials(
   args: string[],
   projectId,
+  config,
   gacFilename,
   opts: { debug?: boolean; firebaseToolsVersion?: string }
 ) {
@@ -84,6 +86,7 @@ async function execWithCredentials(
       [
         ...args,
         ...(projectId ? ["--project", projectId] : []),
+        ...(config ? ["--config", config] : []),
         debug
           ? "--debug" // gives a more thorough error message
           : "--json", // allows us to easily parse the output
@@ -109,7 +112,7 @@ async function execWithCredentials(
       console.log(
         "Retrying deploy with the --debug flag for better error output"
       );
-      await execWithCredentials(args, projectId, gacFilename, {
+      await execWithCredentials(args, projectId, config, gacFilename, {
         debug: true,
         firebaseToolsVersion,
       });
@@ -127,7 +130,7 @@ export async function deployPreview(
   gacFilename: string,
   deployConfig: ChannelDeployConfig
 ) {
-  const { projectId, channelId, target, expires, firebaseToolsVersion } =
+  const { projectId, config, channelId, target, expires, firebaseToolsVersion } =
     deployConfig;
 
   const deploymentText = await execWithCredentials(
@@ -138,6 +141,7 @@ export async function deployPreview(
       ...(expires ? ["--expires", expires] : []),
     ],
     projectId,
+    config,
     gacFilename,
     { firebaseToolsVersion }
   );
@@ -153,11 +157,12 @@ export async function deployProductionSite(
   gacFilename,
   productionDeployConfig: ProductionDeployConfig
 ) {
-  const { projectId, target, firebaseToolsVersion } = productionDeployConfig;
+  const { projectId, config, target, firebaseToolsVersion } = productionDeployConfig;
 
   const deploymentText = await execWithCredentials(
     ["deploy", "--only", `hosting${target ? ":" + target : ""}`],
     projectId,
+    config,
     gacFilename,
     { firebaseToolsVersion }
   );
